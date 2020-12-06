@@ -8,59 +8,10 @@ library(rgenoud)
 library(mxnet)
 library(PMCMR)
 library(PMCMRplus)
-Tube<- read_csv("C:/Users/DUX1/Desktop/PHD Project/3rd Deep learning/3.1 Three other machine learning R/The-1198-samples-TubeT.csv")
-SbeamCAD<- read_csv("C:/Users/DUX1/Desktop/PHD Project/3rd Deep learning/3.1 Three other machine learning R/The-2000-Sbeam-CAD-parameters.csv")
-Tenbars<- read_csv("C:/Users/DUX1/Desktop/PHD Project/3rd Deep learning/3.1 Three other machine learning R/The-2500-Tenbarssystemdesigntable.csv")
-TorsionB<- read_csv("C:/Users/DUX1/Desktop/PHD Project/3rd Deep learning/3.1 Three other machine learning R/TorsionBaresigns.csv")
-
-itube<-sample.int(dim(Tube)[1],1000)  #sampling 1000 observations from the original data
-isbeamcad<-sample.int(dim(SbeamCAD)[1],1000)
-itenbars<-sample.int(dim(Tenbars)[1],1000)
-itorsionb<-sample.int(dim(TorsionB)[1],1000)
-
-DTube<-Tube[itube,]
-DSbeamCAD<-SbeamCAD[isbeamcad,]
-DTenbars<-Tenbars[itenbars,]
-DTorsionB<-TorsionB[itorsionb,]
-
-###Normalization
-maxvalue<-apply(DTube,2,max)
-minvalue<-apply(DTube,2,min)
-NDTube<-as.data.frame(scale(DTube,center = minvalue,scale = maxvalue-minvalue))
-
-maxvalue<-apply(DSbeamCAD,2,max)
-minvalue<-apply(DSbeamCAD,2,min)
-NDSbeamCAD<-as.data.frame(scale(DSbeamCAD,center = minvalue,scale = maxvalue-minvalue))
-
-maxvalue<-apply(DTenbars,2,max)
-minvalue<-apply(DTenbars,2,min)
-NDTenbars<-as.data.frame(scale(DTenbars,center = minvalue,scale = maxvalue-minvalue))
-
-maxvalue<-apply(DTorsionB,2,max)
-minvalue<-apply(DTorsionB,2,min)
-NDTorsionB<-as.data.frame(scale(DTorsionB,center = minvalue,scale = maxvalue-minvalue))
-
-##Task
-dm=dim(NDTube)
-objtube=colnames(NDTube[dm[2]])
-
-dm=dim(NDSbeamCAD)
-objsbeam=colnames(NDSbeamCAD[dm[2]])
-
-dm=dim(NDTenbars)
-objtenbars=colnames(NDTenbars[dm[2]])
-
-dm=dim(NDTorsionB)
-objtorsionb=colnames(NDTorsionB[dm[2]])
-
-tasktube = makeRegrTask(data=NDTube,target=objtube)  #define a regression task
-tasksbeam = makeRegrTask(data=NDSbeamCAD,target=objsbeam)  #define a regression task
-tasktenbars = makeRegrTask(data=NDTenbars,target=objtenbars)  #define a regression task
-tasktorsionb = makeRegrTask(data=NDTorsionB,target=objtorsionb)  #define a regression task
-
-##strategies for the task
-descALL=makeResampleDesc(method="CV",predict="both",iters=5L) ##5L 5-folds CV
-##Learner
+#set current working path
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+##initial Learners
+#GPR
 Regression_GPR_R<- makeLearner("regr.gausspr", par.vals=list(kernel='rbfdot',sigma=0.5))        #creat gaussian process regression object
 
 ##SVM
@@ -72,8 +23,8 @@ Regression_RFR_R<-makeLearner("regr.randomForest", par.vals=list(ntree=500,mtry=
 ##mxnet
 Regression_mxnet_R<-makeLearner("regr.mxff", par.vals=list(num.round=2000,layers=1,num.layer1 =10,act1='tanh',optimizer='sgd',array.batch.size=120,learning.rate=0.1))#,,layers=1,eval.data=list(data=test.x,label=test.y),
 
-###########from the optimal tunning to be here
-##Learners
+#############################################from the optimal tunning to be here######################################################
+##Optimal Learners
 Regression_GPR_tube<-makeLearner("regr.gausspr",par.vals=list(kernel="polydot",degree=3,scale=7.673433,offset=9.301306))
 Regression_SVM_tube<- makeLearner("regr.ksvm",par.vals=list(kernel="polydot",C=9.200679,epsilon=0.04904031,degree=2,scale=9.25414,offset=2.963397))
 Regression_RFR_tube<-setHyperPars(Regression_RFR,par.vals=optimal_RFR_tube$x[[1]])

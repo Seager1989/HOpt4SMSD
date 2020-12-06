@@ -17,10 +17,10 @@ library(openxlsx)
 #set current working path
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 #import data
-DTube<- read.xlsx("./Data/TrainData_1000_tube.xlsx")
-DSbeamCAD<- read.xlsx("./Data/TrainData_1000_sbeamcad.xlsx")
-DTenbars<- read.xlsx("./Data/TrainData_1000_tenbars.xlsx")
-DTorsionB<- read.xlsx("./Data/TrainData_1000_torsionb.xlsx")
+DTube<- read.xlsx("../Data/TrainData_1000_tube.xlsx")
+DSbeamCAD<- read.xlsx("../Data/TrainData_1000_sbeamcad.xlsx")
+DTenbars<- read.xlsx("../Data/TrainData_1000_tenbars.xlsx")
+DTorsionB<- read.xlsx("../Data/TrainData_1000_torsionb.xlsx")
 
 ###Normalization
 maxvalue<-apply(DTube,2,max)

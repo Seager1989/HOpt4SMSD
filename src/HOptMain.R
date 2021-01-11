@@ -17,10 +17,10 @@ library(openxlsx)
 #set current working path
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 #import data
-DTube<- read.xlsx("../Data/TrainData_1000_tube.xlsx")
-DSbeamCAD<- read.xlsx("../Data/TrainData_1000_sbeamcad.xlsx")
-DTenbars<- read.xlsx("../Data/TrainData_1000_tenbars.xlsx")
-DTorsionB<- read.xlsx("../Data/TrainData_1000_torsionb.xlsx")
+DTube<- read.xlsx("../Data/TrainData_1000_OMcT.xlsx")
+DSbeamCAD<- read.xlsx("../Data/TrainData_1000_ShB.xlsx")
+DTenbars<- read.xlsx("../Data/TrainData_1000_TbPT.xlsx")
+DTorsionB<- read.xlsx("../Data/TrainData_1000_TqA.xlsx")
 
 ###Normalization
 maxvalue<-apply(DTube,2,max)
@@ -167,13 +167,13 @@ FinalTorsionB_model_mxnet <- train(Regression_mxnet_torsionb, tasktorsionb)
 
 ############################Test the model by the new data#########################################
 library(ModelMetrics) 
-TeTube<- read.xlsx("./Data/Testdata_180_tube.xlsx")
+TeTube<- read.xlsx("./Data/Testdata_180_OMcT.xlsx")
 TeTube<-TeTube[,2:dim(TeTube)[2]]
-TeSbeamCAD<- read.xlsx("./Data/Testdata_180_sbeamcad.xlsx")
+TeSbeamCAD<- read.xlsx("./Data/Testdata_180_ShB.xlsx")
 TeSbeamCAD<-TeSbeamCAD[,2:dim(TeSbeamCAD)[2]]
-TeTenbars<- read.xlsx("./Data/Testdata_180_tenbars.xlsx")
+TeTenbars<- read.xlsx("./Data/Testdata_180_TbPT.xlsx")
 TeTenbars<-TeTenbars[,2:dim(TeTenbars)[2]]
-TeTorsionB<- read.xlsx("./Data/Testdata_180_torsionb.xlsx")
+TeTorsionB<- read.xlsx("./Data/Testdata_180_TqA.xlsx")
 TeTorsionB<-TeTorsionB[,2:dim(TeTorsionB)[2]]
 #normalization
 ###Normalization
